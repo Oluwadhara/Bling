@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5",
     paddingHorizontal: 16,
+    paddingVertical: 30,
   },
   header: {
     flexDirection: "row",
@@ -282,7 +283,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   checkoutButton: {
-    backgroundColor: "#000",
+    backgroundColor: "#ff630c",
     paddingVertical: 15,
     borderRadius: 10,
     justifyContent: "center",

@@ -4,6 +4,7 @@ import BottomTabComponent from "./src/components/BottomTabComponent";
 import LoginScreen from "./src/screens/LoginScreen";
 import SignupScreen from "./src/screens/SignupScreen";
 import CartScreen from "./src/screens/CartScreen";
+import ProductScreen from "./src/screens/ProductScreen"
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +46,11 @@ export default function App() {
         <Stack.Screen
           name="Cart"
           component={CartScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="Product" 
+          component={ProductScreen} 
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

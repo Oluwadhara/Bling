@@ -24,7 +24,7 @@ export default function FavoriteScreen() {
       name: "MacBook",
       image: require("../assets/ProductImages/macbook.png"),
       rating: 4.9,
-      price: 135000,
+      price: 1560000,
     },
   ];
 
@@ -35,15 +35,15 @@ export default function FavoriteScreen() {
       </View>
       <View style={styles.productList}>
       {products.map((product) => (
-        <View style={styles.productContainer}>
+        <View key={product.id} style={styles.productContainer}>
         
-          <View key={product.id} style={styles.imageContainer}>
+          <View style={styles.imageContainer}>
             <Image source={product.image} style={styles.productImage} />
           </View>
           <View style={styles.productDetails}>
             <Text style={styles.productName}>{product.name}</Text>
             <View style={styles.productDetails}>
-              <Ionicons name="star" size="12px" color="#ffe564" />
+              <Ionicons name="star" size={12} color="#ffe564" />
               <Text style={styles.productRating}>{product.rating}</Text>
             </View>
             
@@ -59,7 +59,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 20,
+    paddingTop: 50,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   header: {
     flexDirection: "row",

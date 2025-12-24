@@ -11,13 +11,23 @@ import {
   Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 
-export default function SearchScreen({ onLayout }) {
+export default function SearchScreen({ onLayout, route }) {
+  const { category = "All", autoFocus = false } = route.params || {};
   const [searchText, setSearchText] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState(category);
+  const inputRef = useRef(null);
 
-  // Dummy data for categories, replace with data fetched from Firebase
+  useEffect(() => {
+    if (autoFocus) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 300);
+    }
+  }, []);
+
+  // Categories (same as before)
   const categories = [
     { id: 1, name: "All" },
     { id: 2, name: "Smartphones" },
@@ -29,11 +39,12 @@ export default function SearchScreen({ onLayout }) {
     { id: 8, name: "Books" },
   ];
 
-  // Dummy data for products
+  // Products (added category field to enable category filtering)
   const products = [
     {
       id: 1,
       name: "AirPods",
+      category: "Headphones",
       image: require("../assets/ProductImages/airpods.png"),
       rating: 4.7,
       price: 135000,
@@ -41,65 +52,74 @@ export default function SearchScreen({ onLayout }) {
     {
       id: 2,
       name: "MacBook",
+      category: "Laptop",
       image: require("../assets/ProductImages/macbook.png"),
       rating: 4.9,
-      price: 135000,
+      price: 1560000,
     },
     {
       id: 3,
       name: "HP Laptop",
+      category: "Laptop",
       image: require("../assets/ProductImages/laptop1.png"),
       rating: 4.6,
-      price: 135000,
+      price: 450000,
     },
     {
       id: 4,
       name: "Dell Laptop",
+      category: "Laptop",
       image: require("../assets/ProductImages/laptop2.png"),
       rating: 4.4,
-      price: 135000,
+      price: 350000,
     },
     {
       id: 5,
       name: "Iphone 11 pro",
+      category: "Smartphones",
       image: require("../assets/ProductImages/phone2.png"),
       rating: 4.3,
-      price: 135000,
+      price: 235000,
     },
     {
       id: 6,
       name: "Samsung S22 Ultra",
+      category: "Smartphones",
       image: require("../assets/ProductImages/phone3.png"),
       rating: 4.8,
-      price: 135000,
+      price: 1350000,
     },
     {
       id: 7,
       name: "Tecno Camon 17",
+      category: "Smartphones",
       image: require("../assets/ProductImages/phone3.png"),
       rating: 4.2,
-      price: 135000,
+      price: 185000,
     },
     {
       id: 8,
       name: "Speakers",
+      category: "Headphones",
       image: require("../assets/ProductImages/speaker2.png"),
       rating: 4.6,
-      price: 135000,
+      price: 85000,
     },
     {
       id: 9,
       name: "Dumm bell speakers",
+      category: "Headphones",
       image: require("../assets/ProductImages/speaker1.png"),
       rating: 4.2,
-      price: 135000,
+      price: 46000,
     },
     {
       id: 10,
       name: "Luxury speakers",
+      category: "Headphones",
       image: require("../assets/ProductImages/speakers.png"),
       rating: 4.4,
-      price: 135000,
+      price: 78000,
     },
   ];
 
@@ -107,31 +127,47 @@ export default function SearchScreen({ onLayout }) {
     setSelectedCategory(category.name);
   };
 
+  // Combined filter: search text + category
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchesSearch = product.name
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+
+      const matchesCategory =
+        selectedCategory === "All" ||
+        product.category === selectedCategory;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchText, selectedCategory]);
+
   return (
     <View style={styles.container} onLayout={onLayout}>
+      {/* Header */}
       <View style={styles.heading}>
         <Text style={styles.text1}>Search on Bling</Text>
         <TouchableOpacity style={styles.cartButton}>
           <Ionicons name="cart-outline" size={18} color="black" />
         </TouchableOpacity>
       </View>
+
+      {/* Search Bar */}
       <View style={styles.searchBar}>
+        <Ionicons name="search" size={20} color="#000" />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search..."
+          placeholder="Search products..."
           placeholderTextColor="#000"
-          onChangeText={(text) => setSearchText(text)}
+          onChangeText={setSearchText}
           value={searchText}
         />
-        <Ionicons
-          name="search"
-          size={20}
-          color="#000"
-          style={styles.searchIcon}
-        />
       </View>
+
+      {/* Results */}
       <SafeAreaView style={styles.searchContainer}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* Category chips */}
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -159,8 +195,10 @@ export default function SearchScreen({ onLayout }) {
               </Pressable>
             ))}
           </ScrollView>
+
+          {/* Product grid */}
           <View style={styles.productList}>
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <View key={product.id} style={styles.productContainer}>
                 <Image source={product.image} style={styles.productImage} />
                 <Text style={styles.productName}>{product.name}</Text>
@@ -171,6 +209,10 @@ export default function SearchScreen({ onLayout }) {
                 <Text style={styles.productPrice}>N{product.price}</Text>
               </View>
             ))}
+            {/* Optional no-results message */}
+            {filteredProducts.length === 0 && (
+              <Text style={styles.noResults}>No products found</Text>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -183,6 +225,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
+    paddingTop: 30,
   },
   heading: {
     justifyContent: "space-between",
@@ -296,5 +339,9 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#000",
     marginTop: 10,
+  },
+  noResults: {
+    marginTop: 20,
+    color: "#777",
   },
 });

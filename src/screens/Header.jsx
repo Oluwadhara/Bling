@@ -31,20 +31,19 @@ export default function Header({ onLayout, navigation }) {
         </TouchableOpacity>
       </View>
       <View style={styles.searchBar}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search..."
-          placeholderTextColor="#000"
-          onChangeText={(text) => setSearchText(text)}
-          value={searchText}
-          underlineColorAndroid="transparent"
-          selectionColor="transparent"
-        />
+        <Pressable
+          style={styles.fakeInput}
+          onPress={() =>
+            navigation.navigate("Search", { autoFocus: true })
+          }
+        >
+          <Text style={styles.placeholderText}>Search...</Text>
+        </Pressable>
+        
         <Ionicons
           name="search"
           size={Dimensions.get("window").width * 0.05}
           color="#000"
-          style={styles.searchIcon}
         />
       </View>
 
@@ -64,6 +63,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
+    paddingTop: 30,
   },
   heading: {
     justifyContent: "space-between",
@@ -107,5 +107,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
     marginLeft: 20,
+  },
+  fakeInput: {
+    flex: 1,
+    justifyContent: "center",
+    paddingVertical: 8,
+  },
+  placeholderText: {
+    fontSize: 16,
+    color: "#777",
   },
 });

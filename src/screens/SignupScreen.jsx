@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
-import { TouchableOpacity } from "react-native-web";
+import { TouchableOpacity } from "react-native";
 import blingLogo from "../assets/bling-high-resolution-logo-transparent.png"
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from '@firebase/app';
@@ -148,8 +148,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    width: '100px',
-    height: '100px',
+    width: 100,
+    height: 100,
     margin: 20,
+    resizeMode: "contain",
   }
 });

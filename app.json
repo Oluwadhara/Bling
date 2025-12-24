@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Bling",
-    "slug": "Bling",
+    "slug": "bling-store",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dararocks.blingstore"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "266851c0-de1e-406a-a613-082b4a02903f"
+      }
     }
   }
 }

@@ -9,9 +9,11 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Categories() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const navigation = useNavigation();
 
   // Dummy data for categories, replace with data fetched from Firebase
   const categories = [
@@ -39,68 +41,71 @@ export default function Categories() {
       name: "MacBook",
       image: require("../assets/ProductImages/macbook.png"),
       rating: 4.9,
-      price: 135000,
+      price: 1560000,
     },
     {
       id: 3,
       name: "HP Laptop",
       image: require("../assets/ProductImages/laptop1.png"),
       rating: 4.6,
-      price: 135000,
+      price: 450000,
     },
     {
       id: 4,
       name: "Dell Laptop",
       image: require("../assets/ProductImages/laptop2.png"),
       rating: 4.4,
-      price: 135000,
+      price: 350000,
     },
     {
       id: 5,
       name: "Iphone 11 pro",
       image: require("../assets/ProductImages/phone2.png"),
       rating: 4.3,
-      price: 135000,
+      price: 235000,
     },
     {
       id: 6,
       name: "Samsung S22 Ultra",
       image: require("../assets/ProductImages/phone3.png"),
       rating: 4.8,
-      price: 135000,
+      price: 1350000,
     },
     {
       id: 7,
       name: "Tecno Camon 17",
       image: require("../assets/ProductImages/phone3.png"),
       rating: 4.2,
-      price: 135000,
+      price: 185000,
     },
     {
       id: 8,
       name: "Speakers",
       image: require("../assets/ProductImages/speaker2.png"),
       rating: 4.6,
-      price: 135000,
+      price: 85000,
     },
     {
       id: 9,
       name: "Dumm bell speakers",
       image: require("../assets/ProductImages/speaker1.png"),
       rating: 4.2,
-      price: 135000,
+      price: 46000,
     },
     {
       id: 10,
       name: "Luxury speakers",
       image: require("../assets/ProductImages/speakers.png"),
       rating: 4.4,
-      price: 135000,
+      price: 78000,
     },
   ];
 
   const handleCategoryPress = (category) => {
-    setSelectedCategory(category.name);
+    navigation.navigate("Search", {
+      category: category.name,
+      autoFocus: true,
+    });
   };
 
   return (
@@ -139,21 +144,25 @@ export default function Categories() {
         ))}
       </ScrollView><View style={styles.productList}>
       {products.map((product) => (
-        <View style={styles.productContainer}>
+        <Pressable
+          key={product.id}
+          style={styles.productContainer}
+          onPress={() => navigation.navigate("Product", { product })}
+        >
         
-          <View key={product.id} style={styles.imageContainer}>
+          <View style={styles.imageContainer}>
             <Image source={product.image} style={styles.productImage} />
           </View>
           <View style={styles.productDetails}>
             <Text style={styles.productName}>{product.name}</Text>
             <View style={styles.productDetails}>
-              <Ionicons name="star" size="12px" color="#ffe564" />
+              <Ionicons name="star" size={12} color="#ffe564" />
               <Text style={styles.productRating}>{product.rating}</Text>
             </View>
             
           </View>
           <Text style={styles.productPrice}>N{product.price}</Text>
-        </View>
+        </Pressable>
       ))}</View>
     </View>
   );

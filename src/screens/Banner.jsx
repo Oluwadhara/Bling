@@ -71,10 +71,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 0,
   },
   imageContainer: {
     width: "85%",
-    height: 125,
+    height: 165,
     backgroundColor: "#d7a885", // Background remains fixed
     margin: 10,
     padding: 10,
